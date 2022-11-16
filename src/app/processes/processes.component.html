@@ -1,0 +1,11 @@
+
+<div *ngFor="let process of processList">
+  <div>id: {{process.id}}</div>
+  <div>title: {{process.title}}</div>
+  <div *ngFor="let stage of process.stage">
+    stage:
+    <div>{{stage.prompt}}</div>
+    <div>{{stage.type}}</div>
+    <div>{{stage.choice}}</div>
+  </div>
+</div>
