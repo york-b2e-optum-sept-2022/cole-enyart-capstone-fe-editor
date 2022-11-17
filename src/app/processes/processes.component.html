@@ -1,11 +1,91 @@
+<div *ngIf="viewProcessList">
+  <h2 class="text-white bg-dark text-center w-100">PROCESSES</h2>
 
-<div *ngFor="let process of processList">
-  <div>id: {{process.id}}</div>
-  <div>title: {{process.title}}</div>
-  <div *ngFor="let stage of process.stage">
-    stage:
-    <div>{{stage.prompt}}</div>
-    <div>{{stage.type}}</div>
-    <div>{{stage.choice}}</div>
+  <div *ngFor="let process of processList" class="card shadow-lg m-3">
+    <div class="card-header">
+      <div>{{process.title}}</div>
+    </div>
+
+    <div class="card-body">
+      <div *ngFor="let stage of process.stage" class="card shadow-sm m-3">
+        <div class="card-header">
+          <div>{{stage.prompt}}</div>
+        </div>
+        <div class="card-body">
+          <div>{{stage.type}}</div>
+          <div *ngFor="let choice of stage.choice">
+            <div>{{choice.text}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer d-flex justify-content-around">
+      <button (click)="onViewEdit(process.id)" class="btn btn-outline-primary m-2">Edit</button>
+      <button (click)="onViewCreate()" class="btn btn-outline-primary m-2">Create</button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="viewCreate" class="card shadow-lg">
+  <div class="card-header">Create Process</div>
+
+  <div class="card-body"></div>
+
+  <div class="card-footer d-flex justify-content-around">
+    <button (click)="onCancel()" class="btn btn-outline-secondary m-2">Cancel</button>
+    <button (click)="onCreate()" class="btn btn-outline-primary m-2">Create</button>
+  </div>
+</div>
+
+<div *ngIf="viewEdit" class="card shadow-lg">
+  <div class="card-header">Edit Process</div>
+
+  <div *ngIf="selectedProcess" class="card-body">
+    <div class="input-group mb-3">
+      <span class="input-group-text">title</span>
+      <input type="text" class="form-control" [(ngModel)]="selectedProcess.title">
+    </div>
+
+    <div *ngFor="let process of selectedProcess.stage; let i = index" class="card shadow-sm m-3">
+      <div class="card-header d-flex justify-content-between">
+        <h4 class="m-2">Stage {{i + 1}}</h4>
+        <button class="btn btn-outline-danger m-2">Remove Stage</button>
+      </div>
+
+      <div class="card-body">
+        <div class="input-group mb-3">
+          <span class="input-group-text">Prompt</span>
+          <input type="text" class="form-control" [(ngModel)]="process.prompt">
+        </div>
+        <div class="input-group mb-3">
+          <span class="input-group-text">Type</span>
+          <input type="text" class="form-control" [(ngModel)]="process.type">
+        </div>
+
+        <div *ngIf="process.choice.length">
+          <div class="card-header">Choice</div>
+
+          <div class="card-body">
+            <div *ngFor="let choice of process.choice; let i = index" class="">
+              <div class="input-group mb-3">
+                <span class="input-group-text">Text {{i + 1}}</span>
+                <input type="text" class="form-control" [(ngModel)]="choice.text">
+                <button (click)="onDelete()" class="btn btn-outline-danger m-2">Remove</button>
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-outline-primary m-2">Add Text</button>
+          <div class="card-footer d-flex justify-content-around"></div>
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-outline-primary m-2">Add Stage</button>
+  </div>
+
+  <div class="card-footer d-flex justify-content-around">
+    <button (click)="onDelete()" class="btn btn-outline-danger m-2">Delete</button>
+    <button (click)="onCancel()" class="btn btn-outline-secondary m-2">Cancel</button>
+    <button (click)="onEdit()" class="btn btn-outline-success m-2">Save Process</button>
   </div>
 </div>
