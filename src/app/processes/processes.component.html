@@ -1,28 +1,32 @@
-<div *ngIf="viewProcessList">
-  <h2 class="text-white bg-dark text-center w-100">PROCESSES</h2>
+<div *ngIf="viewProcessList" style="width: 51rem">
+  <div class="d-flex justify-content-around align-items-center bg-dark">
+    <h2 class="text-white w-100">PROCESSES</h2>
+    <button (click)="onViewCreate()" class="btn btn-outline-primary m-2">Create</button>
+  </div>
+  <div class="d-flex flex-wrap justify-content-center align-items-center">
+    <div *ngFor="let process of processList" class="card shadow-lg m-3" style="width: 15rem;">
+      <div class="card-header">
+        <div>{{process.title}}</div>
+      </div>
 
-  <div *ngFor="let process of processList" class="card shadow-lg m-3">
-    <div class="card-header">
-      <div>{{process.title}}</div>
-    </div>
-
-    <div class="card-body">
-      <div *ngFor="let stage of process.stage" class="card shadow-sm m-3">
-        <div class="card-header">
-          <div>{{stage.prompt}}</div>
-        </div>
-        <div class="card-body">
-          <div>{{stage.type}}</div>
-          <div *ngFor="let choice of stage.choice">
-            <div>{{choice.text}}</div>
+      <div class="card-body">
+        <div *ngFor="let stage of process.stage" class="card shadow-sm m-3">
+          <div class="card-header">
+            <div>{{stage.prompt}}</div>
+          </div>
+          <div class="card-body">
+            <div>{{stage.type}}</div>
+            <div *ngFor="let choice of stage.choice">
+              <div>{{choice.text}}</div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="card-footer d-flex justify-content-around">
-      <button (click)="onViewEdit(process.id)" class="btn btn-outline-primary m-2">Edit</button>
-      <button (click)="onViewCreate()" class="btn btn-outline-primary m-2">Create</button>
+      <div class="card-footer d-flex justify-content-around">
+        <button (click)="onDelete(process.id)" class="btn btn-outline-danger m-2">Delete</button>
+        <button (click)="onViewEdit(process.id)" class="btn btn-outline-primary m-2">Edit</button>
+      </div>
     </div>
   </div>
 </div>
@@ -30,7 +34,51 @@
 <div *ngIf="viewCreate" class="card shadow-lg">
   <div class="card-header">Create Process</div>
 
-  <div class="card-body"></div>
+  <div class="card-body">
+    <div class="input-group mb-3">
+      <span class="input-group-text">title</span>
+      <input type="text" class="form-control" [(ngModel)]="createProcess.title">
+    </div>
+
+    <div *ngFor="let stage of createProcess.stage; let i = index" class="card shadow-sm m-3">
+      <div class="card-header d-flex justify-content-between">
+        <h4 class="m-2">Stage {{i + 1}}</h4>
+        <button (click)="onRemoveStage(i)" class="btn btn-outline-danger m-2">Remove Stage</button>
+      </div>
+
+      <div class="card-body">
+        <div class="input-group mb-3">
+          <span class="input-group-text">Prompt</span>
+          <input type="text" class="form-control" [(ngModel)]="stage.prompt">
+        </div>
+        <div class="input-group mb-3">
+          <span class="input-group-text">Type</span>
+          <select class="form-select" [ngModel]="stage.type" (ngModelChange)="onChange($event, i)">
+            <option value="boolean">Boolean</option>
+            <option value="choice">Multiple Choice</option>
+            <option value="text">Text</option>
+          </select>
+        </div>
+
+        <div *ngIf="stage.choice.length > 1">
+          <div class="card-header">Choice</div>
+
+          <div class="card-body">
+            <div *ngFor="let choice of stage.choice; let i = index" class="">
+              <div class="input-group mb-3">
+                <span class="input-group-text">Text {{i + 1}}</span>
+                <input type="text" class="form-control" [(ngModel)]="choice.text">
+                <button (click)="onRemoveChoiceText(i)" class="btn btn-outline-danger m-2">Remove</button>
+              </div>
+            </div>
+          </div>
+          <button (click)="onAddChoiceText(i)" class="btn btn-outline-primary m-2">Add Text</button>
+          <div class="card-footer d-flex justify-content-around"></div>
+        </div>
+      </div>
+    </div>
+    <button (click)="onAddStage()" class="btn btn-outline-primary m-2">Add Stage</button>
+  </div>
 
   <div class="card-footer d-flex justify-content-around">
     <button (click)="onCancel()" class="btn btn-outline-secondary m-2">Cancel</button>
@@ -71,7 +119,7 @@
               <div class="input-group mb-3">
                 <span class="input-group-text">Text {{i + 1}}</span>
                 <input type="text" class="form-control" [(ngModel)]="choice.text">
-                <button (click)="onDelete()" class="btn btn-outline-danger m-2">Remove</button>
+                <button (click)="onRemoveChoiceText(i)" class="btn btn-outline-danger m-2">Remove</button>
               </div>
             </div>
           </div>
@@ -84,7 +132,6 @@
   </div>
 
   <div class="card-footer d-flex justify-content-around">
-    <button (click)="onDelete()" class="btn btn-outline-danger m-2">Delete</button>
     <button (click)="onCancel()" class="btn btn-outline-secondary m-2">Cancel</button>
     <button (click)="onEdit()" class="btn btn-outline-success m-2">Save Process</button>
   </div>
