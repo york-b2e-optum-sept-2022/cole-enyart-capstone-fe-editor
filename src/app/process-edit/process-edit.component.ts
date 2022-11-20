@@ -1,15 +1,60 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
+import {IProcess} from "../_interfaces/IProcess";
+import {Subject, takeUntil} from "rxjs";
+import {ProcessService} from "../process.service";
+import {ViewService} from "../view.service";
 
 @Component({
   selector: 'app-process-edit',
   templateUrl: './process-edit.component.html',
   styleUrls: ['./process-edit.component.css']
 })
-export class ProcessEditComponent implements OnInit {
+export class ProcessEditComponent implements OnDestroy {
 
-  constructor() { }
+  editProcess!: IProcess | null;
+  onDestroy = new Subject();
 
-  ngOnInit(): void {
+  constructor(private processService: ProcessService, private viewService: ViewService) {
+    this.processService.$processEdit.pipe(takeUntil(this.onDestroy)).subscribe({
+      next: (processEdit) => {
+          this.editProcess = processEdit;
+      },
+      error: () => {}
+    })
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy.next(null);
+    this.onDestroy.complete();
+  }
+
+  onEdit() {
+    // this.processService.postProcess(this.createProcess);
+    this.viewService.viewProcessList();
+  }
+
+  onCancel() {
+    this.viewService.viewProcessList();
+  }
+
+  onAddStage() {
+
+  }
+
+  onRemoveStage(stageIndex: number) {
+
+  }
+
+  onAddChoiceText(stageIndex: number) {
+
+  }
+
+  onRemoveChoiceText(stageIndex: number, choiceIndex: number) {
+
+  }
+
+  onChange($event: any, stageIndex: number) {
+
   }
 
 }

@@ -9,7 +9,9 @@ import {IProcessCreate} from "./_interfaces/IProcessCreate";
 })
 export class ProcessService {
 
-  $processList = new BehaviorSubject<IProcess[] | null>(null);
+  $processList = new BehaviorSubject<IProcess[]>([]);
+  $processCreate = new BehaviorSubject<IProcessCreate | null>(null);
+  $processEdit = new BehaviorSubject<IProcess | null>(null);
 
   constructor(private httpService: HttpService) {
     this.getAllProcesses();
@@ -40,5 +42,13 @@ export class ProcessService {
       },
       error: () => {}
     })
+  }
+
+  public selectProcessEdit(processId: number) {
+    for (let process of this.$processList.getValue()) {
+      if (process.id === processId) {
+        this.$processEdit.next(process);
+      }
+    }
   }
 }

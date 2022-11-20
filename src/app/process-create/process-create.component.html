@@ -1,1 +1,57 @@
-<p>process-create works!</p>
+<div class="card shadow-lg">
+  <div class="card-header">Create Process</div>
+
+  <div class="card-body">
+    <div class="input-group mb-3">
+      <span class="input-group-text">title</span>
+      <input type="text" class="form-control" [(ngModel)]="createProcess.title">
+    </div>
+
+    <div *ngFor="let stage of createProcess.stage; let stageIndex = index" class="card shadow-sm m-3">
+      <div class="card-header d-flex justify-content-between">
+        <h4 class="m-2">Stage {{stageIndex + 1}}</h4>
+        <button (click)="onRemoveStage(stageIndex)" class="btn btn-outline-danger m-2">Remove Stage</button>
+      </div>
+
+      <div class="card-body">
+        <div class="input-group mb-3">
+          <span class="input-group-text">Prompt</span>
+          <input type="text" class="form-control" [(ngModel)]="stage.prompt">
+        </div>
+        <div class="input-group mb-3">
+          <span class="input-group-text">Type</span>
+          <select class="form-select" [ngModel]="stage.type" (ngModelChange)="onChange($event, stageIndex)">
+            <option value="boolean">Boolean</option>
+            <option value="choice">Multiple Choice</option>
+            <option value="text">Text</option>
+          </select>
+        </div>
+
+        <div *ngIf="stage.choice.length > 1">
+          <div class="card-header">Choice</div>
+
+          <div class="card-body">
+            <div *ngFor="let choice of stage.choice; let choiceIndex = index">
+              <div class="input-group mb-3">
+                <span class="input-group-text">Text {{choiceIndex + 1}}</span>
+                <input type="text" class="form-control" [(ngModel)]="choice.text">
+                <button (click)="onRemoveChoiceText(stageIndex, choiceIndex)" class="btn btn-outline-danger m-2">
+                  Remove
+                </button>
+              </div>
+            </div>
+          </div>
+          <button (click)="onAddChoiceText(stageIndex)" class="btn btn-outline-primary m-2">Add Text</button>
+        </div>
+
+        <div class="card-footer d-flex justify-content-around"></div>
+      </div>
+    </div>
+    <button (click)="onAddStage()" class="btn btn-outline-primary m-2">Add Stage</button>
+  </div>
+
+  <div class="card-footer d-flex justify-content-around">
+    <button (click)="onCancel()" class="btn btn-outline-secondary m-2">Cancel</button>
+    <button (click)="onCreate()" class="btn btn-outline-primary m-2">Create</button>
+  </div>
+</div>

@@ -4,6 +4,9 @@
   </nav>
 
   <div class="d-flex justify-content-center align-items-center">
-    <app-process-list></app-process-list>
+    <app-process-list *ngIf="viewProcessList"></app-process-list>
+    <app-process-create *ngIf="viewCreate"></app-process-create>
+    <app-process-edit *ngIf="viewEdit"></app-process-edit>
+    <app-finished-process-list *ngIf="viewFinishedProcessList"></app-finished-process-list>
   </div>
 </div>
