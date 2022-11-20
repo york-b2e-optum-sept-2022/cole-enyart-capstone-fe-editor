@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ProcessListComponent } from './processList.component';
+import { ProcessListComponent } from './process-list.component';
 
 describe('ProcessesComponent', () => {
   let component: ProcessListComponent;
