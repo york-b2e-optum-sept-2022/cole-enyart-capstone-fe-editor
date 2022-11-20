@@ -33,7 +33,7 @@ export class ProcessService {
     })
   }
 
-  deleteProcess(processId: number) {
+  public deleteProcess(processId: number) {
     this.httpService.deleteProcess(processId).pipe(first()).subscribe({
       next: () => {
         this.getAllProcesses();

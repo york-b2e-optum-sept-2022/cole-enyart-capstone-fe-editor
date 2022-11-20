@@ -5,11 +5,11 @@ import {IProcess} from "../_interfaces/IProcess";
 import {IProcessCreate} from "../_interfaces/IProcessCreate";
 
 @Component({
-  selector: 'app-processes',
-  templateUrl: './processes.component.html',
-  styleUrls: ['./processes.component.css']
+  selector: 'app-processList',
+  templateUrl: './processList.component.html',
+  styleUrls: ['./processList.component.css']
 })
-export class ProcessesComponent implements OnInit, OnDestroy {
+export class ProcessListComponent implements OnInit, OnDestroy {
 
   processList: IProcess[] = [];
   selectedProcess!: IProcess | null;
