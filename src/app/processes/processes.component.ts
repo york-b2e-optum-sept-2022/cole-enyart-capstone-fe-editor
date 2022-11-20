@@ -15,7 +15,7 @@ export class ProcessesComponent implements OnInit, OnDestroy {
   selectedProcess!: IProcess | null;
   createProcess: IProcessCreate = {
     title: "",
-    stage: [{index: 0, prompt: "", type: "", choice: [{index: 0, text: ""}]}]
+    stage: [{index: 0, prompt: "", type: "", choice: []}]
   }
   type: Boolean = false;
   indexStage: number = 0;
@@ -89,24 +89,20 @@ export class ProcessesComponent implements OnInit, OnDestroy {
     this.createProcess.stage.splice(i, 1);
   }
 
-  onRemoveChoiceText(i: number) {
+  onRemoveChoiceText(ind: number, i: number) {
+    const index = this.createProcess.stage.filter((x) => x.index === ind);
 
-    const index = this.createProcess.stage.filter((x) => x.index === i);
-    // if (index[0].choice.length <= 2) {
-    //   return;
-    // }
-    console.log(i);
-    console.log(index[0].choice);
-    index[0].choice.splice(-1, 1);
-
+    if (index[0].choice.length <= 2) {
+      // todo add error
+      return;
+    }
+    index[0].choice.splice(i, 1);
   }
 
   onAddChoiceText(i: number) {
     this.indexChoice += 1;
     const index = this.createProcess.stage.filter((x) => x.index === i);
     index[0].choice.push({index: this.indexChoice, text: ""});
-    console.log(index[this.indexChoice]);
-    console.log(this.createProcess);
   }
 
   onAddStage() {
@@ -115,9 +111,8 @@ export class ProcessesComponent implements OnInit, OnDestroy {
       index: this.indexStage,
       prompt: "",
       type: "",
-      choice: [{index: this.indexChoice, text: ""}]
+      choice: []
     });
-    console.log(this.createProcess);
   }
 
   onChange($event: any, i: number) {
@@ -125,6 +120,9 @@ export class ProcessesComponent implements OnInit, OnDestroy {
     index[0].type = $event;
     if ($event === "choice") {
       this.onAddChoiceText(i);
+      this.onAddChoiceText(i);
+    } else {
+      index[0].choice = [];
     }
   }
 }

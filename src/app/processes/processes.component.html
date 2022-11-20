@@ -40,10 +40,10 @@
       <input type="text" class="form-control" [(ngModel)]="createProcess.title">
     </div>
 
-    <div *ngFor="let stage of createProcess.stage; let i = index" class="card shadow-sm m-3">
+    <div *ngFor="let stage of createProcess.stage; let ind = index" class="card shadow-sm m-3">
       <div class="card-header d-flex justify-content-between">
-        <h4 class="m-2">Stage {{i + 1}}</h4>
-        <button (click)="onRemoveStage(i)" class="btn btn-outline-danger m-2">Remove Stage</button>
+        <h4 class="m-2">Stage {{ind + 1}}</h4>
+        <button (click)="onRemoveStage(ind)" class="btn btn-outline-danger m-2">Remove Stage</button>
       </div>
 
       <div class="card-body">
@@ -53,7 +53,7 @@
         </div>
         <div class="input-group mb-3">
           <span class="input-group-text">Type</span>
-          <select class="form-select" [ngModel]="stage.type" (ngModelChange)="onChange($event, i)">
+          <select class="form-select" [ngModel]="stage.type" (ngModelChange)="onChange($event, ind)">
             <option value="boolean">Boolean</option>
             <option value="choice">Multiple Choice</option>
             <option value="text">Text</option>
@@ -64,17 +64,17 @@
           <div class="card-header">Choice</div>
 
           <div class="card-body">
-            <div *ngFor="let choice of stage.choice; let i = index" class="">
+            <div *ngFor="let choice of stage.choice; let i = index">
               <div class="input-group mb-3">
                 <span class="input-group-text">Text {{i + 1}}</span>
                 <input type="text" class="form-control" [(ngModel)]="choice.text">
-                <button (click)="onRemoveChoiceText(i)" class="btn btn-outline-danger m-2">Remove</button>
+                <button (click)="onRemoveChoiceText(ind, i)" class="btn btn-outline-danger m-2">Remove</button>
               </div>
             </div>
           </div>
-          <button (click)="onAddChoiceText(i)" class="btn btn-outline-primary m-2">Add Text</button>
-          <div class="card-footer d-flex justify-content-around"></div>
         </div>
+        <button (click)="onAddChoiceText(ind)" class="btn btn-outline-primary m-2">Add Text</button>
+        <div class="card-footer d-flex justify-content-around"></div>
       </div>
     </div>
     <button (click)="onAddStage()" class="btn btn-outline-primary m-2">Add Stage</button>
@@ -95,9 +95,9 @@
       <input type="text" class="form-control" [(ngModel)]="selectedProcess.title">
     </div>
 
-    <div *ngFor="let process of selectedProcess.stage; let i = index" class="card shadow-sm m-3">
+    <div *ngFor="let process of selectedProcess.stage; let ind = index" class="card shadow-sm m-3">
       <div class="card-header d-flex justify-content-between">
-        <h4 class="m-2">Stage {{i + 1}}</h4>
+        <h4 class="m-2">Stage {{ind + 1}}</h4>
         <button class="btn btn-outline-danger m-2">Remove Stage</button>
       </div>
 
@@ -119,7 +119,7 @@
               <div class="input-group mb-3">
                 <span class="input-group-text">Text {{i + 1}}</span>
                 <input type="text" class="form-control" [(ngModel)]="choice.text">
-                <button (click)="onRemoveChoiceText(i)" class="btn btn-outline-danger m-2">Remove</button>
+                <button (click)="onRemoveChoiceText(ind, i)" class="btn btn-outline-danger m-2">Remove</button>
               </div>
             </div>
           </div>
