@@ -1,5 +1,5 @@
 export interface IProcess {
   id: number
   title: string
-  stage: { prompt: string, type: string, choice: { text: string } [] }[]
+  stage: { id: number, prompt: string, type: string, choice: { id: number, text: string } [] }[]
 }
