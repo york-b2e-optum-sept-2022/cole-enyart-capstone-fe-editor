@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import { Observable } from 'rxjs';
 import {IProcess} from "./_interfaces/IProcess";
-import {IProcessCreate} from "./_interfaces/IProcessCreate";
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +16,7 @@ export class HttpService {
     ) as Observable<IProcess[]>
   }
 
-  public postProcess(process: IProcessCreate): Observable<IProcess> {
+  public postProcess(process: IProcess): Observable<IProcess> {
     return this.httpClient.post(
       "http://localhost:8080/api/process", process
     ) as Observable<IProcess>

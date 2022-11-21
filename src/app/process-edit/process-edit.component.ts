@@ -11,11 +11,11 @@ import {ViewService} from "../view.service";
 })
 export class ProcessEditComponent implements OnDestroy {
 
-  editProcess!: IProcess | null;
+  editProcess!: IProcess;
   onDestroy = new Subject();
 
   constructor(private processService: ProcessService, private viewService: ViewService) {
-    this.processService.$processEdit.pipe(takeUntil(this.onDestroy)).subscribe({
+    this.processService.$process.pipe(takeUntil(this.onDestroy)).subscribe({
       next: (processEdit) => {
           this.editProcess = processEdit;
       },
@@ -29,32 +29,34 @@ export class ProcessEditComponent implements OnDestroy {
   }
 
   onEdit() {
-    // this.processService.postProcess(this.createProcess);
+    this.processService.postProcess(this.editProcess);
     this.viewService.viewProcessList();
   }
 
   onCancel() {
     this.viewService.viewProcessList();
+    // this.processService.$process.next(null);
+    this.processService.getAllProcesses();
   }
 
   onAddStage() {
-
+    this.processService.onAddStage();
   }
 
   onRemoveStage(stageIndex: number) {
-
+    this.processService.onRemoveStage(stageIndex);
   }
 
   onAddChoiceText(stageIndex: number) {
-
+    this.processService.onAddChoiceText(stageIndex);
   }
 
   onRemoveChoiceText(stageIndex: number, choiceIndex: number) {
-
+    this.processService.onRemoveChoiceText(stageIndex, choiceIndex);
   }
 
   onChange($event: any, stageIndex: number) {
-
+    this.processService.onChange($event, stageIndex);
   }
 
 }
