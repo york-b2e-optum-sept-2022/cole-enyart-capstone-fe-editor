@@ -17,11 +17,10 @@ export class ProcessListComponent implements OnDestroy {
   constructor(private processService: ProcessService, private viewService: ViewService) {
     this.processService.$processList.pipe(takeUntil(this.onDestroy)).subscribe({
       next: (processList) => {
-        if (processList) {
-          this.processList = processList;
-        }
+        this.processList = processList;
       },
-      error: () => {}
+      error: () => {
+      }
     })
   }
 
@@ -43,4 +42,8 @@ export class ProcessListComponent implements OnDestroy {
     this.processService.deleteProcess(processId);
   }
 
+  onViewFinishedProcessList() {
+    this.viewService.viewFinishedProcessList();
+    this.processService.getAllFinishedProcesses();
+  }
 }
