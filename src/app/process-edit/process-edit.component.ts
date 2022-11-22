@@ -12,6 +12,7 @@ import {ViewService} from "../view.service";
 export class ProcessEditComponent implements OnDestroy {
 
   editProcess!: IProcess;
+  errorMessage: string = "";
   onDestroy = new Subject();
 
   constructor(private processService: ProcessService, private viewService: ViewService) {
@@ -20,7 +21,15 @@ export class ProcessEditComponent implements OnDestroy {
           this.editProcess = processEdit;
       },
       error: () => {}
-    })
+    });
+
+    this.processService.$processError.pipe(takeUntil(this.onDestroy)).subscribe( {
+      next: (errorMessage) => {
+        this.errorMessage = errorMessage;
+      },
+      error: () => {
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -29,13 +38,12 @@ export class ProcessEditComponent implements OnDestroy {
   }
 
   onEdit() {
-    this.processService.postProcess(this.editProcess);
+    this.processService.updateProcess(this.editProcess);
     this.viewService.viewProcessList();
   }
 
   onCancel() {
     this.viewService.viewProcessList();
-    // this.processService.$process.next(null);
     this.processService.getAllProcesses();
   }
 

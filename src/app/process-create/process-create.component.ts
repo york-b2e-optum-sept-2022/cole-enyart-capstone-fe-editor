@@ -1,4 +1,4 @@
-import {Component, OnDestroy} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Subject, takeUntil} from "rxjs";
 import {ViewService} from "../view.service";
 import {ProcessService} from "../process.service";
@@ -9,22 +9,36 @@ import {IProcess} from "../_interfaces/IProcess";
   templateUrl: './process-create.component.html',
   styleUrls: ['./process-create.component.css']
 })
-export class ProcessCreateComponent implements OnDestroy {
+export class ProcessCreateComponent implements OnInit, OnDestroy {
 
   createProcess!: IProcess
-  // indexStage: number = 0;
-  // indexChoice: number = 0;
+  errorMessage: string = "";
   onDestroy = new Subject();
 
   constructor(private processService: ProcessService, private viewService: ViewService) {
     this.processService.$process.pipe(takeUntil(this.onDestroy)).subscribe({
-      next: (processCreate) => {
-        if (processCreate) {
-          this.createProcess = processCreate;
-        }
+      next: (process) => {
+        this.createProcess = process;
       },
-      error: () => {}
-    })
+      error: () => {
+      }
+    });
+
+    this.processService.$processError.pipe(takeUntil(this.onDestroy)).subscribe( {
+      next: (errorMessage) => {
+        this.errorMessage = errorMessage;
+      },
+      error: () => {
+      }
+    });
+  }
+
+  ngOnInit() {
+    this.processService.$process.next({
+      id: 0,
+      title: "",
+      stages: [{id: 0, prompt: "", type: "", choices: []}]
+    });
   }
 
   ngOnDestroy(): void {
@@ -33,7 +47,7 @@ export class ProcessCreateComponent implements OnDestroy {
   }
 
   onCreate() {
-    this.processService.postProcess(this.createProcess);
+    this.processService.createProcess(this.createProcess);
     this.viewService.viewProcessList();
   }
 
@@ -43,56 +57,22 @@ export class ProcessCreateComponent implements OnDestroy {
 
   onAddStage() {
     this.processService.onAddStage();
-
-    // this.indexStage += 1;
-    // this.createProcess.stage.push({
-    //   index: this.indexStage,
-    //   prompt: "",
-    //   type: "",
-    //   choice: []
-    // });
   }
 
   onRemoveStage(stageIndex: number) {
     this.processService.onRemoveStage(stageIndex);
-
-    // if (this.createProcess.stage.length <= 1) {
-    //   return;
-    // }
-    // this.createProcess.stage.splice(stageIndex, 1);
   }
 
   onAddChoiceText(stageIndex: number) {
     this.processService.onAddChoiceText(stageIndex);
-
-    // this.indexChoice += 1;
-    // const index = this.createProcess.stage.filter((x) => x.index === stageIndex);
-    // index[0].choice.push({index: this.indexChoice, text: ""});
   }
 
   onRemoveChoiceText(stageIndex: number, choiceIndex: number) {
     this.processService.onRemoveChoiceText(stageIndex, choiceIndex);
-
-    // const index = this.createProcess.stage.filter((x) => x.index === stageIndex);
-    //
-    // if (index[0].choice.length <= 2) {
-    //   // todo add error
-    //   return;
-    // }
-    // index[0].choice.splice(choiceIndex, 1);
   }
 
   onChange($event: any, stageIndex: number) {
     this.processService.onChange($event, stageIndex);
-
-    // const index = this.createProcess.stage.filter((x) => x.index === stageIndex);
-    // index[0].type = $event;
-    // if ($event === "choice") {
-    //   this.onAddChoiceText(stageIndex);
-    //   this.onAddChoiceText(stageIndex);
-    // } else {
-    //   index[0].choice = [];
-    // }
   }
 
 }

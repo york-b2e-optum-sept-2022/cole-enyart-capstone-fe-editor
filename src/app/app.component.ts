@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {ViewService} from "./view.service";
 
 @Component({
@@ -14,33 +14,37 @@ export class AppComponent {
   viewFinishedProcessList: boolean = false;
 
 
-  constructor(private viewService: ViewService ) {
+  constructor(private viewService: ViewService) {
     this.viewService.$viewProcessList.pipe().subscribe({
       next: (viewProcessList) => {
         this.viewProcessList = viewProcessList;
       },
-      error: () => {}
+      error: () => {
+      }
     })
 
     this.viewService.$viewCreate.pipe().subscribe({
       next: (viewCreate) => {
         this.viewCreate = viewCreate;
       },
-      error: () => {}
+      error: () => {
+      }
     })
 
     this.viewService.$viewEdit.pipe().subscribe({
       next: (viewEdit) => {
         this.viewEdit = viewEdit;
       },
-      error: () => {}
+      error: () => {
+      }
     })
 
     this.viewService.$viewFinishedProcessList.pipe().subscribe({
       next: (viewFinishedProcessList) => {
         this.viewFinishedProcessList = viewFinishedProcessList;
       },
-      error: () => {}
+      error: () => {
+      }
     })
   }
 }
