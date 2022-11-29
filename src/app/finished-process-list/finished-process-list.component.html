@@ -1,6 +1,6 @@
 <div style="width: 51rem">
   <div class="d-flex justify-content-around align-items-center bg-dark">
-    <h2 class="text-white w-100">PROCESSES</h2>
+    <h2 class="text-white w-100">FINISHED PROCESSES</h2>
     <button (click)="onViewProcessList()" class="btn btn-sm btn-outline-primary m-2">Process List</button>
   </div>
 
@@ -18,9 +18,9 @@
           </div>
           <div class="card-body">
             <div>{{stage.answer}}</div>
-<!--            <div *ngFor="let choice of stage.choices">-->
-<!--              <div>{{choice.text}}</div>-->
-<!--            </div>-->
+            <div *ngFor="let choice of stage.finishedChoices">
+              <div>( {{choice.value}} ) - {{choice.text}}</div>
+            </div>
           </div>
         </div>
       </div>
