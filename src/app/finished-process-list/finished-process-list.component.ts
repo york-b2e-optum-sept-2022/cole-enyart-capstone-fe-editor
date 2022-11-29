@@ -31,5 +31,6 @@ export class FinishedProcessListComponent implements OnDestroy {
 
   onViewProcessList() {
     this.viewService.viewProcessList();
+    this.processService.getAllProcesses();
   }
 }

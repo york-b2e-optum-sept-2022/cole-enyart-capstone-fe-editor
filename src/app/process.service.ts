@@ -92,7 +92,7 @@ export class ProcessService {
   public onAddStage() {
     this.$processError.next("");
 
-    this.indexStage -= 1;
+    this.indexStage += 1;
     this.$process.getValue().stages.push({
       id: this.indexStage,
       prompt: "",
@@ -114,7 +114,7 @@ export class ProcessService {
   onAddChoiceText(stageIndex: number) {
     this.$processError.next("");
 
-    this.indexChoice -= 1;
+    this.indexChoice += 1;
     const index = this.$process.getValue().stages.filter((stage) => stage.id === stageIndex);
     index[0].choices.push({id: this.indexChoice, text: ""});
   }
@@ -132,7 +132,6 @@ export class ProcessService {
 
   onChange($event: any, stageIndex: number) {
     this.$processError.next("");
-
     const index = this.$process.getValue().stages.filter((stage) => stage.id === stageIndex);
     index[0].type = $event;
 
